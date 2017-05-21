@@ -2,8 +2,14 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 24px;
 }
 
 #app {
   margin: 0 auto;
+}
+
+.floatingActionButton {
+	text-align: center;
 }

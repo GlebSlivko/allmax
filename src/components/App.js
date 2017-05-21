@@ -7,7 +7,6 @@ import deepPurple100 from 'material-ui/styles/colors';
 const muiTheme = getMuiTheme({
 	palette: {
 		primary1Color: deepPurple100
-
 	}
 
 });
