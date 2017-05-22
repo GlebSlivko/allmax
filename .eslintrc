@@ -11,7 +11,8 @@
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+    "jsx": true,
+    "experimentalObjectRestSpread": true
     }
   },
   "env": {
@@ -64,6 +65,7 @@
     "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 1
+    "react/wrap-multilines": 1,
+    "comma-dangle": 0
   }
 }

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TodoDetail from './TodoDetail';
+import TodoDelete from './TodoDelete';
 import {ListItem} from 'material-ui/List';
 import InitializeTodoEditForm from './InitializeTodoEditForm';
 import {bindActionCreators} from 'redux';
@@ -18,14 +19,18 @@ class DetailEditBox extends Component {
 		this.state = {
 			showModal: false,
 			detailTodoValue: true,
-			editTodoValue: null
+			editTodoValue: false,
+			deleteTodoValue: false
 		};
 
 		this.toggleModal = this.toggleModal.bind(this);
 
-		this.editTodo = this.editTodo.bind(this);
-		this.updateSubmitTodo = this.updateSubmitTodo.bind(this);
+		this.toEditTodo = this.toEditTodo.bind(this);
+		this.toDeleteTodo = this.toDeleteTodo.bind(this);
+		this.toDetailTodo = this.toDetailTodo.bind(this);
 
+		this.updateSubmitTodo = this.updateSubmitTodo.bind(this);
+		this.deleteSubmitTodo = this.deleteSubmitTodo.bind(this);
 	}
 
 	updateSubmitTodo(todo) {
@@ -34,19 +39,42 @@ class DetailEditBox extends Component {
 		toastr.success('Todo updated');
 	}
 
-	editTodo() {
-		this.setState({
-			detailTodoValue: !this.state.detailTodoValue,
-			editTodoValue: !this.state.editTodoValue
-		});
+	deleteSubmitTodo(todo) {
+		this.props.todoactions.deleteTodo(todo);
+		this.toggleModal();
+		toastr.success('Todo deleted');
+	}
 
+	toEditTodo() {
+		this.setState({
+			detailTodoValue: false,
+			editTodoValue: true,
+			deleteTodoValue: false
+		});
+	}
+
+	toDetailTodo() {
+		this.setState({
+			detailTodoValue: true,
+			editTodoValue: false,
+			deleteTodoValue: false
+		});
+	}
+
+	toDeleteTodo() {
+		this.setState({
+			detailTodoValue: false,
+			editTodoValue: false,
+			deleteTodoValue: true
+		});
 	}
 
 	toggleModal() {
 		this.setState({
 			showModal: !this.state.showModal,
 			detailTodoValue: true,
-			editTodoValue: null
+			editTodoValue: false,
+			deleteTodoValue: false
 		});
 	}
 
@@ -65,9 +93,7 @@ class DetailEditBox extends Component {
 		return (
 			<div>
 				<ListItem  style={styleForTodo} onClick={this.toggleModal}>
-					{this.props.thisTodo.title}{' '}
-					{this.props.thisTodo.description}{' '}
-					{this.props.thisTodo.lastName}
+					{this.props.thisTodo.title}
 				</ListItem>
 				<Dialog 
 					open={this.state.showModal}
@@ -75,9 +101,10 @@ class DetailEditBox extends Component {
 					onRequestClose={this.toggleModal}
 					autoScrollBodyContent>
 
-					{this.state.detailTodoValue && <TodoDetail editTodo={this.editTodo} thisTodo={this.props.thisTodo}/>}
-					{this.state.editTodoValue && <InitializeTodoEditForm onSubmit={this.updateSubmitTodo} editTodo={this.editTodo} thisTodo={this.props.thisTodo}/>}
-
+					{this.state.detailTodoValue && <TodoDetail toDeleteTodo={this.toDeleteTodo} toEditTodo={this.toEditTodo} thisTodo={this.props.thisTodo}/>}
+					{this.state.editTodoValue && <InitializeTodoEditForm onSubmit={this.updateSubmitTodo} toDetailTodo={this.toDetailTodo} thisTodo={this.props.thisTodo}/>}
+					{this.state.deleteTodoValue && <TodoDelete onSubmit={this.deleteSubmitTodo} toDetailTodo={this.toDetailTodo} thisTodo={this.props.thisTodo}/>}
+					
 					<FlatButton style={styleFlatButtonButton} label="Close" primary onClick={this.toggleModal} />
 				</Dialog>
 			</div>

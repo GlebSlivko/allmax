@@ -1,27 +1,27 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TimePicker, TextField, RadioButtonGroup, DatePicker } from 'redux-form-material-ui';
+import { connect } from 'react-redux';
+import { TimePicker, TextField, SelectField, DatePicker } from 'redux-form-material-ui';
 import FlatButton from 'material-ui/FlatButton';
-import {RadioButton} from 'material-ui/RadioButton';
+import MenuItem from 'material-ui/MenuItem';
 
 
 let InitializeTodoEditForm = props => {
   
-  const { handleSubmit, pristine, reset, submitting, editTodo } = props;
+  const { handleSubmit, pristine, reset, submitting, toDetailTodo } = props;
   const style = {float: 'right'};
   const required = value => value ? undefined : 'Required';
   const maxLength = max => value => value && value.length > max ? `Must be ${max} characters or less` : undefined;
   const maxLength20 = maxLength(20);
   const minLength = min => value => value && value.length < min ? `Must be ${min} characters or greater` : undefined;
   const minLength2 = minLength(2);
-  
+
   return (
     <form>
       <div>
-        <FlatButton style={style} label="Save" onClick={handleSubmit} disabled={pristine || submitting}/>
-        <FlatButton style={style} label="Undo Changes" disabled={pristine || submitting} onClick={reset}/>
-        <FlatButton style={style} onClick={editTodo} label="Back" />
+        <FlatButton primary style={style} label="Save" onClick={handleSubmit} disabled={pristine || submitting}/>
+        <FlatButton primary style={style} label="Undo Changes" disabled={pristine || submitting} onClick={reset}/>
+        <FlatButton primary style={style} onClick={toDetailTodo} label="Back" />
       </div>
         <div>
          <Field name="title"
@@ -40,9 +40,11 @@ let InitializeTodoEditForm = props => {
         <div>
           <Field
             name="till.when"
+            label="tillDate"
             component={DatePicker}
             format={(value) => typeof(value) === 'string' ? new Date(value) : value}
-            hintText="Day of delivery?"
+            hintText="tillDate"
+            floatingLabelText="tillDate"
           />
         </div>
         <div>
@@ -54,10 +56,16 @@ let InitializeTodoEditForm = props => {
           />
         </div>
         <div>
-          <Field hintText="importance" floatingLabelText="importance" name="importance" component={RadioButtonGroup}>
-            <RadioButton value="very important" label="Pickup" />
-            <RadioButton value="important" label="Delivery" />
-            <RadioButton value="usual" label="Delivery" />
+          <Field
+            name="importance"
+            component={SelectField}
+            hintText="importance"
+            floatingLabelText="importance"
+            validate={required}
+          >
+            <MenuItem value="usual" primaryText="usual" />
+            <MenuItem value="important" primaryText="important" />
+            <MenuItem value="very important" primaryText="very important" />
           </Field>
         </div>
     </form>
@@ -77,7 +85,7 @@ InitializeTodoEditForm = connect(
 )(InitializeTodoEditForm);
 
 InitializeTodoEditForm.propTypes = {
-  editTodo: PropTypes.func.isRequired,
+  toDetailTodo: PropTypes.func.isRequired,
   reset: PropTypes.bool,
   pristine: PropTypes.bool,
   submitting: PropTypes.bool,
