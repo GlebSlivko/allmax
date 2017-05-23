@@ -19,9 +19,23 @@ let InitializeTodoEditForm = props => {
   return (
     <form>
       <div>
-        <FlatButton primary style={style} label="Save" onClick={handleSubmit} disabled={pristine || submitting}/>
-        <FlatButton primary style={style} label="Undo Changes" disabled={pristine || submitting} onClick={reset}/>
-        <FlatButton primary style={style} onClick={toDetailTodo} label="Back" />
+        <FlatButton 
+          primary 
+          style={style} 
+          label="Save" 
+          onClick={handleSubmit} 
+          disabled={pristine || submitting}/>
+        <FlatButton 
+          primary 
+          style={style} 
+          label="Undo Changes" 
+          disabled={pristine || submitting} 
+          onClick={reset}/>
+        <FlatButton 
+          primary 
+          style={style} 
+          onClick={toDetailTodo} 
+          label="Back" />
       </div>
         <div>
          <Field name="title"
@@ -31,7 +45,7 @@ let InitializeTodoEditForm = props => {
             validate={[ required, maxLength20, minLength2 ]}/>
         </div>
         <div>
-           <Field name="description"
+          <Field name="description"
             component={TextField}
             hintText="description"
             floatingLabelText="description"
@@ -61,11 +75,16 @@ let InitializeTodoEditForm = props => {
             component={SelectField}
             hintText="importance"
             floatingLabelText="importance"
-            validate={required}
-          >
-            <MenuItem value="usual" primaryText="usual" />
-            <MenuItem value="important" primaryText="important" />
-            <MenuItem value="very important" primaryText="very important" />
+            validate={required}>
+            <MenuItem 
+              value="usual" 
+              primaryText="usual" />
+            <MenuItem
+              value="important" 
+              primaryText="important" />
+            <MenuItem 
+              value="very important" 
+              primaryText="very important" />
           </Field>
         </div>
     </form>

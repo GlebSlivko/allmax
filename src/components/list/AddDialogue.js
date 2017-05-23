@@ -15,21 +15,21 @@ const AddDialogue = ({
   handleCloseAdd
 }) => (
    <Dialog
-        modal
-        open={openAdd}
-        onRequestClose={handleCloseAdd}
-        autoScrollBodyContent>
-        <TodoForm onSubmit={handleSubmitTodo}/>
+    modal
+    open={openAdd}
+    onRequestClose={handleCloseAdd}
+    autoScrollBodyContent>
+    <TodoForm onSubmit={handleSubmitTodo}/>
 
-        <div className="button-float-button">
-          <FlatButton
-          style = {styleFlatButtonButton}
-            label="Close"
-            primary
-            onTouchTap={handleCloseAdd}
-            />
-        </div>
-      </Dialog>
+    <div className="button-float-button">
+      <FlatButton
+        style = {styleFlatButtonButton}
+        label="Close"
+        primary
+        onTouchTap={handleCloseAdd}
+      />
+    </div>
+  </Dialog>
 );
 
 AddDialogue.propTypes = {

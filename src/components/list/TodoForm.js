@@ -21,7 +21,12 @@ let TodoForm = class TodoForm extends Component {
     return (
       <form>
         <div>
-          <FlatButton primary style={style} disabled={pristine || submitting} onTouchTap={handleSubmit} label="Save" />
+          <FlatButton 
+            primary 
+            style={style} 
+            disabled={pristine || submitting} 
+            onTouchTap={handleSubmit} 
+            label="Save" />
         </div>
         <div>
          <Field name="title"
@@ -62,9 +67,15 @@ let TodoForm = class TodoForm extends Component {
             floatingLabelText="importance"
             validate={required}
           >
-            <MenuItem value="usual" primaryText="usual" />
-            <MenuItem value="important" primaryText="important" />
-            <MenuItem value="very important" primaryText="very important" />
+            <MenuItem
+              value="usual" 
+              primaryText="usual" />
+            <MenuItem 
+              value="important" 
+              primaryText="important" />
+            <MenuItem 
+              value="very important" 
+              primaryText="very important" />
           </Field>
         </div>
       </form>

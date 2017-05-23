@@ -27,16 +27,28 @@ class DetailEditBox extends Component {
 
 		this.toEditTodo = this.toEditTodo.bind(this);
 		this.toDeleteTodo = this.toDeleteTodo.bind(this);
+
 		this.toDetailTodo = this.toDetailTodo.bind(this);
+		this.toggleMarkTodo = this.toggleMarkTodo.bind(this);
 
 		this.updateSubmitTodo = this.updateSubmitTodo.bind(this);
 		this.deleteSubmitTodo = this.deleteSubmitTodo.bind(this);
+
+		this.getNow = this.getNow.bind(this);
 	}
 
 	updateSubmitTodo(todo) {
 		this.props.todoactions.updateTodo(todo);
-		this.toggleModal();
+		this.toDetailTodo();
 		toastr.success('Todo updated');
+	}
+
+	toggleMarkTodo(todo) {
+		if (todo.done) {
+			this.props.todoactions.unmarkTodo(todo);
+		} else {
+			this.props.todoactions.markTodo(todo);
+		}
 	}
 
 	deleteSubmitTodo(todo) {
@@ -78,21 +90,38 @@ class DetailEditBox extends Component {
 		});
 	}
 
+	getNow() {
+		return new Date();
+	}
+
 	render() {
 		
-		const styleForTodo = {
+		let styleForTodo = {
 			margin: 'auto',
 			textAlign: "center",
-			width: '50%'
+			width: '40%'
 		};
+		const styleFlatButtonButton = { float: 'right' };
+		let now = this.getNow();
 
-		const styleFlatButtonButton = {
-			float: 'right'
-		};
+		if (this.props.thisTodo.till 
+			&& this.props.thisTodo.till.when
+			&& this.props.thisTodo.till.when < now
+			&& this.props.thisTodo.till.time 
+			&& this.props.thisTodo.till.time.getTime() < now.getTime() 
+			&& !this.props.thisTodo.done) {
+			styleForTodo.color = "red";
+		}
+
+		if (this.props.thisTodo.done) {
+			styleForTodo.color = "lightgreen";
+		}
 
 		return (
 			<div>
-				<ListItem  style={styleForTodo} onClick={this.toggleModal}>
+				<ListItem  
+					style={styleForTodo} 
+					onClick={this.toggleModal}>
 					{this.props.thisTodo.title}
 				</ListItem>
 				<Dialog 
@@ -101,11 +130,28 @@ class DetailEditBox extends Component {
 					onRequestClose={this.toggleModal}
 					autoScrollBodyContent>
 
-					{this.state.detailTodoValue && <TodoDetail toDeleteTodo={this.toDeleteTodo} toEditTodo={this.toEditTodo} thisTodo={this.props.thisTodo}/>}
-					{this.state.editTodoValue && <InitializeTodoEditForm onSubmit={this.updateSubmitTodo} toDetailTodo={this.toDetailTodo} thisTodo={this.props.thisTodo}/>}
-					{this.state.deleteTodoValue && <TodoDelete onSubmit={this.deleteSubmitTodo} toDetailTodo={this.toDetailTodo} thisTodo={this.props.thisTodo}/>}
+					{this.state.detailTodoValue 
+						&& <TodoDetail 
+						toggleMarkTodo={this.toggleMarkTodo} 
+						toDeleteTodo={this.toDeleteTodo} 
+						toEditTodo={this.toEditTodo} 
+						thisTodo={this.props.thisTodo}/>}
+					{this.state.editTodoValue 
+						&& <InitializeTodoEditForm 
+						onSubmit={this.updateSubmitTodo} 
+						toDetailTodo={this.toDetailTodo} 
+						thisTodo={this.props.thisTodo}/>}
+					{this.state.deleteTodoValue 
+						&& <TodoDelete 
+						onSubmit={this.deleteSubmitTodo} 
+						toDetailTodo={this.toDetailTodo} 
+						thisTodo={this.props.thisTodo}/>}
 					
-					<FlatButton style={styleFlatButtonButton} label="Close" primary onClick={this.toggleModal} />
+					<FlatButton 
+						style={styleFlatButtonButton} 
+						label="Close" 
+						primary 
+						onClick={this.toggleModal} />
 				</Dialog>
 			</div>
 		);

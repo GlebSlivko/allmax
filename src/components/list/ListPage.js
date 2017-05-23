@@ -7,6 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import AddDialogue from './AddDialogue';
 import ListTodo from './ListTodo';
 import toastr from 'toastr';
+import FlatButton from 'material-ui/FlatButton';
 
 
 class ListPage extends React.Component {
@@ -15,13 +16,20 @@ class ListPage extends React.Component {
 		super(props, context);
 
 		this.state = {
-			openAdd: false
+			openAdd: false,
+			filter: false
 		};
 
 		this.handleOpenAdd = this.handleOpenAdd.bind(this);
 		this.handleCloseAdd = this.handleCloseAdd.bind(this);
 
 		this.handleSubmitTodo = this.handleSubmitTodo.bind(this);
+
+		this.setFilterUsual = this.setFilterUsual.bind(this);
+		this.setFilterAll = this.setFilterAll.bind(this);
+		this.setFilterImportant = this.setFilterImportant.bind(this);
+		this.setFilterVI = this.setFilterVI.bind(this);
+
 	}
 
 	handleOpenAdd() {
@@ -41,15 +49,73 @@ class ListPage extends React.Component {
 
 	}
 
+	setFilterUsual() {
+		this.setState({
+			filter: 1
+		});
+	}
+
+	setFilterAll() {
+		this.setState({
+			filter: false
+		});
+	}
+
+	setFilterImportant() {
+		this.setState({
+			filter: 2
+		});
+	}
+
+	setFilterVI() {
+		this.setState({
+			filter: 3
+		});
+	}
+
 	render() {
-		const todos = this.props.todos;
+		let todos = this.props.todos;
 		const styleFloatingActionButton = {
-			marginTop: '2%',
+			marginTop: '4%',
 			marginBottom: '2%'
 		};
 
+		if (this.state.filter == 1) {
+			todos = todos.filter(todo => todo.importance == "usual");
+		}
+
+		if (this.state.filter == 2) {
+			todos = todos.filter(todo => todo.importance == "important");
+		}
+
+		if (this.state.filter == 3) {
+			todos = todos.filter(todo => todo.importance == "very important");
+		}
+
 		return(
 			<div>
+				<div className="floatingActionButton">
+					<FlatButton 
+						secondary 
+						label="all" 
+						onClick={this.setFilterAll} 
+						/>
+					<FlatButton 
+						secondary 
+						label="usual" 
+						onClick={this.setFilterUsual} 
+						/>
+					<FlatButton 
+						secondary 
+						label="important" 
+						onClick={this.setFilterImportant} 
+						/>
+					<FlatButton 
+						secondary 
+						label="very important" 
+						onClick={this.setFilterVI} 
+						/>
+				</div>
 				<div className="floatingActionButton">
 					<FloatingActionButton 
 						style={styleFloatingActionButton} 
@@ -64,7 +130,7 @@ class ListPage extends React.Component {
 				</div>
 				<ListTodo todos={todos}/>
 			</div>
-		);
+			);
 	}
 }
 
