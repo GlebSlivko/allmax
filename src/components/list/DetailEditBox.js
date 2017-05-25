@@ -93,23 +93,86 @@ class DetailEditBox extends Component {
 	getNow() {
 		return new Date();
 	}
+	
 
 	render() {
-		
+
+		const styleFlatButtonButton = { float: 'right' };
 		let styleForTodo = {
 			margin: 'auto',
 			textAlign: "center",
 			width: '40%'
 		};
-		const styleFlatButtonButton = { float: 'right' };
+
 		let now = this.getNow();
+		let timeNowString = now.toLocaleTimeString(
+			'en-GB',
+			{ hour: 'numeric', minute: 'numeric', second: 'numeric' }
+		);
+
+		let timeTillString = null;
+		if (this.props.thisTodo.till
+			&& typeof(this.props.thisTodo.till.time)==='string' 
+			&& this.props.thisTodo.till.time) {
+			timeTillString = new Date(this.props.thisTodo.till.time).toLocaleTimeString(
+				'en-GB', 
+				{ hour: 'numeric', minute: 'numeric', second: 'numeric' }
+			);
+		}
+
+		if (this.props.thisTodo.till
+			&& typeof(this.props.thisTodo.till.time)==='object' 
+			&& this.props.thisTodo.till.time) {
+			timeTillString = this.props.thisTodo.till.time.toLocaleTimeString(
+				'en-GB', 
+				{ hour: 'numeric', minute: 'numeric', second: 'numeric' }
+			);
+		}
+
+
+
+		let compareTime = timeNowString > timeTillString;
 
 		if (this.props.thisTodo.till 
 			&& this.props.thisTodo.till.when
-			&& this.props.thisTodo.till.when < now
+			&& typeof(this.props.thisTodo.till.when)==='object'
+			&& this.props.thisTodo.till.when.setHours(0, 0, 0, 0) 
+			< now.setHours(0, 0, 0, 0)) {
+			styleForTodo.color = "red";
+		}
+
+		if (this.props.thisTodo.till 
+			&& this.props.thisTodo.till.when
+			&& typeof(this.props.thisTodo.till.when)==='string'
+			&& new Date(this.props.thisTodo.till.when).setHours(0, 0, 0, 0) 
+			< now.setHours(0, 0, 0, 0)) {
+			styleForTodo.color = "red";
+		}
+
+		if (this.props.thisTodo.till
+			&& this.props.thisTodo.till.when
+			&& typeof(this.props.thisTodo.till.when)==='object'
+			&& this.props.thisTodo.till.when.setHours(0, 0, 0, 0) 
+			== now.setHours(0, 0, 0, 0)
+			&& this.props.thisTodo.till.time
+			&& compareTime) {
+			styleForTodo.color = "red";
+		}
+
+		if (this.props.thisTodo.till
+			&& this.props.thisTodo.till.when
+			&& typeof(this.props.thisTodo.till.when)==='string'
+			&& new Date(this.props.thisTodo.till.when).setHours(0, 0, 0, 0) 
+			== now.setHours(0, 0, 0, 0)
+			&& this.props.thisTodo.till.time
+			&& compareTime) {
+			styleForTodo.color = "red";
+		}
+
+		if (this.props.thisTodo.till
 			&& this.props.thisTodo.till.time 
-			&& this.props.thisTodo.till.time.getTime() < now.getTime() 
-			&& !this.props.thisTodo.done) {
+			&& !this.props.thisTodo.till.when
+			&& compareTime) {
 			styleForTodo.color = "red";
 		}
 

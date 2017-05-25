@@ -12,12 +12,12 @@ const styleFlatButtonButton = {
 const AddDialogue = ({ 
   handleSubmitTodo,
   openAdd, 
-  handleCloseAdd
+  handleOpenAddToggle
 }) => (
    <Dialog
     modal
     open={openAdd}
-    onRequestClose={handleCloseAdd}
+    onRequestClose={handleOpenAddToggle}
     autoScrollBodyContent>
     <TodoForm onSubmit={handleSubmitTodo}/>
 
@@ -26,7 +26,7 @@ const AddDialogue = ({
         style = {styleFlatButtonButton}
         label="Close"
         primary
-        onTouchTap={handleCloseAdd}
+        onTouchTap={handleOpenAddToggle}
       />
     </div>
   </Dialog>
@@ -35,7 +35,7 @@ const AddDialogue = ({
 AddDialogue.propTypes = {
   handleSubmitTodo: PropTypes.func.isRequired,
   openAdd: PropTypes.bool.isRequired,
-  handleCloseAdd: PropTypes.func.isRequired
+  handleOpenAddToggle: PropTypes.func.isRequired
 };
 
 export default AddDialogue;

@@ -20,8 +20,7 @@ class ListPage extends React.Component {
 			filter: false
 		};
 
-		this.handleOpenAdd = this.handleOpenAdd.bind(this);
-		this.handleCloseAdd = this.handleCloseAdd.bind(this);
+		this.handleOpenAddToggle = this.handleOpenAddToggle.bind(this);
 
 		this.handleSubmitTodo = this.handleSubmitTodo.bind(this);
 
@@ -32,21 +31,16 @@ class ListPage extends React.Component {
 
 	}
 
-	handleOpenAdd() {
-		this.setState({openAdd: true});
-	}
-
-	handleCloseAdd() {
-		this.setState({
-			openAdd: false
+	handleOpenAddToggle() {
+		this.setState(
+			{openAdd: !this.state.openAdd
 		});
 	}
 
 	handleSubmitTodo(newTodo) {
 		this.props.todoactions.saveTodo(newTodo);
-		this.handleCloseAdd();
+		this.handleOpenAddToggle();
 		toastr.success('Todo saved');
-
 	}
 
 	setFilterUsual() {
@@ -79,7 +73,7 @@ class ListPage extends React.Component {
 			marginTop: '4%',
 			marginBottom: '2%'
 		};
-
+		
 		if (this.state.filter == 1) {
 			todos = todos.filter(todo => todo.importance == "usual");
 		}
@@ -119,14 +113,14 @@ class ListPage extends React.Component {
 				<div className="floatingActionButton">
 					<FloatingActionButton 
 						style={styleFloatingActionButton} 
-						onTouchTap={this.handleOpenAdd}>
+						onTouchTap={this.handleOpenAddToggle}>
 						<ContentAdd />
 					</FloatingActionButton>
 
 					<AddDialogue
 						openAdd={this.state.openAdd}
 						handleSubmitTodo={this.handleSubmitTodo}
-						handleCloseAdd={this.handleCloseAdd}/>
+						handleOpenAddToggle={this.handleOpenAddToggle}/>
 				</div>
 				<ListTodo todos={todos}/>
 			</div>
