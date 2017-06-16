@@ -29,7 +29,7 @@ iOS) / веб-сайт (веб-приложение)
 - React Native, React.js, Cordova, Framework7, Angular, Ionic.
 ```
 ```sh
-git clone https://github.com/itditp/allmax_test.git && cd allmax_test
+git clone https://github.com/itditp/allmax_test.git && cd allmax
 npm install
 npm run build
 npm start -s
